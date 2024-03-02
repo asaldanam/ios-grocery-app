@@ -11,7 +11,7 @@ import SwiftUI
 struct ios_grocery_appApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeView(search: .constant(""))
+            HomeView()
         }
     }
 }

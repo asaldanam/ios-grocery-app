@@ -8,35 +8,64 @@
 import SwiftUI
 
 struct HomeView: View {
-    @Binding var search: String
-    @State var search2: String = "a"
+    @State var search: String = ""
 
     var body: some View {
-        ZStack {
-            Color.purple.ignoresSafeArea()
-//            Text("Hello").padding(48).background()
-            VStack {
-                TextField("Search", text: $search2)
-                    .accentColor(.red)
-                    .font(.system(size: 20, weight: .regular))
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 40)
-                    .frame(width: .none, height: 48)
-                    .border(.foreground)
-//                    .background(.secondary)
-//                    .foregroundStyle(.secondary)
-//                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .padding(.horizontal, 8)
-//                Image(systemName: "globe")
-//                    .imageScale(.large)
-//                    .foregroundStyle(.tint)
-                Text(search2)
-                    .padding(.top, 20)
+        GeometryReader { geometry in
+            ZStack(alignment: .top) {
+                ScrollView {
+                    LazyVStack(alignment: .leading) {
+                        ForEach(1...100, id: \.self) {
+                            if (search.contains("\($0)")) {
+                                Text("Row \($0)")
+                            }
+                        }
+                    }
+                        .padding(.top, 160)
+                }
+
+                Ellipse()
+                    .fill(
+                        LinearGradient(
+                            gradient: Gradient(colors: [.teal, .green]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(width: geometry.size.width * 1.5, height: 200)
+                    .position(x: geometry.size.width / 2, y: 0)
+                
+                VStack {
+                    Text("My list")
+                        .font(.title)
+                        .foregroundStyle(.background)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                    HStack(spacing: 0) {
+                        Image(systemName: "magnifyingglass")
+                            .opacity(0.5)
+                        TextField("Search...", text: $search)
+                            .font(.system(size: 18))
+                            .padding(.leading, 8)
+                    }
+                        .padding()
+                        .frame(height: 56)
+                        .background(.background)
+                        .cornerRadius(12)
+                        .shadow(color: Color(.systemGray4), radius: 24)
+                     
+                    Text(search)
+                        .frame(alignment: .leading)
+                        .padding(.top, 32)
+                    
+                }
+                    .padding(.top)
+                    .padding(.horizontal)
             }
         }
     }
 }
 
 #Preview {
-    HomeView(search: .constant(""))
+    HomeView()
 }
